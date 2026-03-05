@@ -7,10 +7,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="לוז שיעורים">
-<meta name="theme-color" content="#6c63ff">
-<link rel="manifest" href="./manifest.json">
-<link rel="apple-touch-icon" href="./icon-192.png">
-<title>לוז שיעורים משפחתי</title>
+<meta name="theme-color" content="#0f0f13">
+<title>לוח זמנים שיעורים</title>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -33,18 +31,17 @@
     color: var(--text);
     min-height: 100vh;
     padding: 24px 16px;
-    padding-top: max(24px, env(safe-area-inset-top));
   }
   body::before {
     content: '';
     position: fixed; inset: 0;
-    background:
+    background: 
       radial-gradient(ellipse 60% 40% at 20% 20%, rgba(108,99,255,0.08) 0%, transparent 60%),
       radial-gradient(ellipse 50% 35% at 80% 80%, rgba(67,233,123,0.06) 0%, transparent 60%);
     pointer-events: none; z-index: 0;
   }
   .container { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
-  header { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 36px; }
   .logo {
     width: 48px; height: 48px;
     background: linear-gradient(135deg, var(--accent), var(--zoom-blue));
@@ -52,14 +49,13 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 24px;
     box-shadow: 0 4px 20px rgba(108,99,255,0.4);
-    flex-shrink: 0;
   }
-  h1 { font-size: 26px; font-weight: 900; letter-spacing: -0.5px; }
+  h1 { font-size: 28px; font-weight: 900; letter-spacing: -0.5px; }
   h1 span { color: var(--accent); }
-  .subtitle { color: var(--text-dim); font-size: 13px; margin-top: 2px; }
-  .children-nav { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .subtitle { color: var(--text-dim); font-size: 14px; margin-top: 2px; }
+  .children-nav { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
   .child-tab {
-    padding: 10px 18px; border-radius: 50px;
+    padding: 10px 20px; border-radius: 50px;
     border: 2px solid var(--border); background: var(--surface);
     color: var(--text-dim); cursor: pointer;
     font-family: 'Heebo', sans-serif; font-size: 15px; font-weight: 600;
@@ -74,11 +70,11 @@
   .child-panel.active { display: block; }
   .input-card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 20px; padding: 20px; margin-bottom: 16px;
+    border-radius: 20px; padding: 24px; margin-bottom: 24px;
   }
   .input-label {
-    font-size: 12px; font-weight: 700; color: var(--text-dim);
-    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;
+    font-size: 13px; font-weight: 700; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;
     display: flex; align-items: center; gap: 8px;
   }
   .input-label::before {
@@ -88,28 +84,28 @@
   .name-input {
     width: 100%; background: var(--surface2); border: 1.5px solid var(--border);
     border-radius: 10px; color: var(--text); font-family: 'Heebo', sans-serif;
-    font-size: 15px; padding: 10px 14px; margin-bottom: 10px; direction: rtl;
+    font-size: 14px; padding: 10px 14px; margin-bottom: 10px; direction: rtl;
     transition: border-color 0.2s;
   }
   .name-input:focus { outline: none; border-color: var(--accent); }
   .name-input::placeholder { color: var(--text-dim); }
   textarea {
-    width: 100%; min-height: 130px; background: var(--surface2);
+    width: 100%; min-height: 140px; background: var(--surface2);
     border: 1.5px solid var(--border); border-radius: 12px; color: var(--text);
-    font-family: 'Heebo', sans-serif; font-size: 13px; padding: 12px 14px;
+    font-family: 'Heebo', sans-serif; font-size: 13px; padding: 14px 16px;
     resize: vertical; line-height: 1.6; direction: rtl; transition: border-color 0.2s;
   }
   textarea:focus { outline: none; border-color: var(--accent); }
   textarea::placeholder { color: var(--text-dim); }
   .btn-parse {
-    margin-top: 12px; padding: 12px 24px;
+    margin-top: 12px; padding: 12px 28px;
     background: linear-gradient(135deg, var(--accent), var(--zoom-blue));
     border: none; border-radius: 50px; color: white;
     font-family: 'Heebo', sans-serif; font-size: 15px; font-weight: 700;
     cursor: pointer; display: flex; align-items: center; gap: 8px;
     transition: all 0.2s; box-shadow: 0 4px 16px rgba(108,99,255,0.3);
   }
-  .btn-parse:active { transform: scale(0.97); }
+  .btn-parse:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(108,99,255,0.45); }
   .btn-parse:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   .loading { display: none; align-items: center; gap: 10px; color: var(--text-dim); font-size: 14px; margin-top: 12px; }
   .loading.show { display: flex; }
@@ -120,39 +116,41 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
   .export-bar {
-    display: none; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
-    padding: 14px 16px; background: var(--surface); border: 1px solid var(--border);
+    display: none; gap: 10px; flex-wrap: wrap; margin-bottom: 24px;
+    padding: 16px 20px; background: var(--surface); border: 1px solid var(--border);
     border-radius: 16px; align-items: center; justify-content: space-between;
   }
   .export-bar.show { display: flex; }
-  .export-bar-title { font-size: 13px; font-weight: 600; color: var(--text-dim); }
+  .export-bar-title { font-size: 14px; font-weight: 600; color: var(--text-dim); }
   .btn-export-all {
-    padding: 9px 16px;
+    padding: 10px 20px;
     background: linear-gradient(135deg, var(--accent3), #20bf6b);
     border: none; border-radius: 50px; color: #0a2e1a;
-    font-family: 'Heebo', sans-serif; font-size: 13px; font-weight: 700;
+    font-family: 'Heebo', sans-serif; font-size: 14px; font-weight: 700;
     cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;
   }
+  .btn-export-all:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(67,233,123,0.3); }
   .btn-whatsapp {
-    padding: 9px 16px;
+    padding: 10px 20px;
     background: linear-gradient(135deg, #25D366, #128C7E);
     border: none; border-radius: 50px; color: white;
-    font-family: 'Heebo', sans-serif; font-size: 13px; font-weight: 700;
+    font-family: 'Heebo', sans-serif; font-size: 14px; font-weight: 700;
     cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;
   }
+  .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(37,211,102,0.3); }
   .section-title {
-    font-size: 15px; font-weight: 700; color: var(--text-dim);
-    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+    font-size: 16px; font-weight: 700; color: var(--text-dim);
+    display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
   }
   .lesson-count {
     background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 20px; padding: 3px 10px; font-size: 12px; color: var(--text-dim);
+    border-radius: 20px; padding: 4px 12px; font-size: 12px; color: var(--text-dim);
   }
   .lessons-grid { display: flex; flex-direction: column; gap: 10px; }
   .lesson-card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; padding: 14px 16px;
-    display: flex; align-items: center; gap: 12px;
+    border-radius: 14px; padding: 16px 20px;
+    display: flex; align-items: center; gap: 16px;
     transition: all 0.2s; position: relative; overflow: hidden;
     animation: fadeIn 0.3s ease both;
   }
@@ -161,51 +159,58 @@
     content: ''; position: absolute; right: 0; top: 0; bottom: 0;
     width: 3px; background: var(--accent); border-radius: 0 14px 14px 0;
   }
-  .lesson-time { font-size: 20px; font-weight: 900; color: var(--accent); min-width: 60px; letter-spacing: -1px; }
-  .lesson-info { flex: 1; min-width: 0; }
-  .lesson-subject { font-size: 15px; font-weight: 700; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .lesson-teacher { font-size: 12px; color: var(--text-dim); }
-  .lesson-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+  .lesson-card:hover { border-color: var(--accent); transform: translateX(-2px); }
+  .lesson-time { font-size: 22px; font-weight: 900; color: var(--accent); min-width: 70px; letter-spacing: -1px; }
+  .lesson-info { flex: 1; }
+  .lesson-subject { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+  .lesson-teacher { font-size: 13px; color: var(--text-dim); }
+  .lesson-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
   .btn-join {
-    padding: 7px 14px; background: var(--zoom-blue); border: none;
+    padding: 8px 16px; background: var(--zoom-blue); border: none;
     border-radius: 50px; color: white; font-family: 'Heebo', sans-serif;
     font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none;
-    display: flex; align-items: center; gap: 5px; transition: all 0.2s; white-space: nowrap;
+    display: flex; align-items: center; gap: 6px; transition: all 0.2s;
   }
-  .btn-join:active { transform: scale(0.95); }
+  .btn-join:hover { background: #1a7fe0; transform: scale(1.05); }
   .btn-join.meet { background: var(--meet-green); }
+  .btn-join.meet:hover { background: #1557b0; }
   .btn-ics {
-    padding: 7px 10px; background: var(--surface2); border: 1px solid var(--border);
+    padding: 8px 12px; background: var(--surface2); border: 1px solid var(--border);
     border-radius: 50px; color: var(--text-dim); font-family: 'Heebo', sans-serif;
     font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;
     transition: all 0.2s; white-space: nowrap;
   }
   .btn-ics:hover { border-color: var(--accent3); color: var(--accent3); }
   .date-badge {
-    font-size: 12px; color: var(--text-dim); background: var(--surface2);
+    font-size: 13px; color: var(--text-dim); background: var(--surface2);
     border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px;
-    display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px;
+    display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px;
   }
-  .empty-state { text-align: center; padding: 36px 20px; color: var(--text-dim); }
-  .empty-icon { font-size: 44px; margin-bottom: 12px; opacity: 0.4; }
-  .empty-text { font-size: 14px; }
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--text-dim); }
+  .empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
+  .empty-text { font-size: 15px; }
   .error-msg { color: var(--accent2); font-size: 13px; margin-top: 8px; display: none; }
   .toast {
     position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(100px);
     background: var(--surface2); border: 1px solid var(--accent3);
-    color: var(--accent3); padding: 12px 22px; border-radius: 50px;
-    font-size: 14px; font-weight: 600; transition: transform 0.3s;
-    z-index: 1000; white-space: nowrap;
-    bottom: max(24px, env(safe-area-inset-bottom));
+    color: var(--accent3); padding: 12px 24px; border-radius: 50px;
+    font-size: 14px; font-weight: 600; transition: transform 0.3s; z-index: 1000; white-space: nowrap;
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
+  @media (max-width: 600px) {
+    .lesson-card { flex-wrap: wrap; gap: 10px; }
+    .lesson-actions { width: 100%; }
+    .btn-join { flex: 1; justify-content: center; }
+    h1 { font-size: 22px; }
+  }
   /* Install banner */
   .install-banner {
-    display: none; align-items: center; gap: 12px;
+    display: none;
+    align-items: center; gap: 12px;
     background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(45,140,255,0.1));
     border: 1px solid rgba(108,99,255,0.4);
-    border-radius: 14px; padding: 14px 16px; margin-bottom: 20px;
+    border-radius: 14px; padding: 14px 18px; margin-bottom: 20px;
     animation: fadeIn 0.4s ease;
   }
   .install-banner.show { display: flex; }
@@ -213,20 +218,13 @@
   .install-banner-text strong { color: var(--accent); display: block; margin-bottom: 2px; }
   .install-banner-text span { color: var(--text-dim); font-size: 12px; }
   .btn-install {
-    padding: 9px 16px; background: var(--accent); border: none;
+    padding: 9px 18px; background: var(--accent); border: none;
     border-radius: 50px; color: white; font-family: 'Heebo', sans-serif;
     font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap;
     transition: all 0.2s; flex-shrink: 0;
   }
-  .btn-dismiss {
-    background: none; border: none; color: var(--text-dim);
-    cursor: pointer; font-size: 18px; padding: 4px; flex-shrink: 0;
-  }
-  @media (max-width: 480px) {
-    .lesson-card { flex-wrap: wrap; }
-    .lesson-actions { width: 100%; }
-    .btn-join { flex: 1; justify-content: center; }
-  }
+  .btn-install:hover { transform: scale(1.05); }
+  .btn-dismiss { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 18px; padding: 4px; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -239,30 +237,29 @@
     </div>
   </header>
 
+  <div class="children-nav" id="childrenNav"></div>
   <div id="installBanner" class="install-banner">
-    <span style="font-size:26px">📲</span>
+    <span style="font-size:28px">📲</span>
     <div class="install-banner-text">
-      <strong>התקן כאפליקציה</strong>
-      <span>עובד ללא דפדפן, כמו אפליקציה רגילה</span>
+      <strong>התקן כאפליקציה על הטלפון</strong>
+      <span>עובד ללא דפדפן — כמו אפליקציה רגילה</span>
     </div>
     <button class="btn-install" id="installBtn">התקן</button>
-    <button class="btn-dismiss" id="dismissBtn">✕</button>
+    <button class="btn-dismiss" onclick="dismissInstall()">✕</button>
   </div>
-
-  <div class="children-nav" id="childrenNav"></div>
   <div id="panels"></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── Data & Storage ───────────────────────────────────────────────
 const EMOJIS = ['👦','👧','🧒'];
 
+// Load from localStorage or defaults
 function loadData() {
   try {
-    const s = localStorage.getItem('familySchedule_v2');
-    if (s) return JSON.parse(s);
+    const saved = localStorage.getItem('familySchedule');
+    if (saved) return JSON.parse(saved);
   } catch(e) {}
   return [
     { name: 'ילד 1', lessons: [] },
@@ -270,28 +267,20 @@ function loadData() {
     { name: 'ילד 3', lessons: [] }
   ];
 }
+
 function saveData() {
-  try { localStorage.setItem('familySchedule_v2', JSON.stringify(childData)); } catch(e) {}
+  try { localStorage.setItem('familySchedule', JSON.stringify(childData)); } catch(e) {}
 }
 
 const childData = loadData();
 let activeChild = 0;
 let deferredInstallPrompt = null;
 
-// ─── Service Worker ───────────────────────────────────────────────
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('SW registered:', reg.scope))
-      .catch(err => console.log('SW error:', err));
-  });
-}
-
-// ─── PWA Install ─────────────────────────────────────────────────
+// PWA install prompt
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   deferredInstallPrompt = e;
-  if (!localStorage.getItem('pwaInstallDismissed')) {
+  if (!localStorage.getItem('installDismissed')) {
     document.getElementById('installBanner').classList.add('show');
   }
 });
@@ -300,86 +289,77 @@ document.getElementById('installBtn').addEventListener('click', async () => {
   if (!deferredInstallPrompt) return;
   deferredInstallPrompt.prompt();
   const { outcome } = await deferredInstallPrompt.userChoice;
-  document.getElementById('installBanner').classList.remove('show');
-  if (outcome === 'accepted') showToast('🎉 האפליקציה הותקנה בהצלחה!');
+  if (outcome === 'accepted') {
+    document.getElementById('installBanner').classList.remove('show');
+    showToast('🎉 האפליקציה הותקנה בהצלחה!');
+  }
   deferredInstallPrompt = null;
 });
 
-document.getElementById('dismissBtn').addEventListener('click', () => {
+function dismissInstall() {
   document.getElementById('installBanner').classList.remove('show');
-  localStorage.setItem('pwaInstallDismissed', '1');
-});
+  localStorage.setItem('installDismissed', '1');
+}
 
 window.addEventListener('appinstalled', () => {
   document.getElementById('installBanner').classList.remove('show');
-  showToast('🎉 הותקן! חפש את האפליקציה במסך הבית');
 });
 
-// ─── UI Init ─────────────────────────────────────────────────────
 function init() {
   const nav = document.getElementById('childrenNav');
   const panels = document.getElementById('panels');
-
   childData.forEach((c, i) => {
+    // Tab
     const tab = document.createElement('button');
-    tab.className = 'child-tab' + (i === 0 ? ' active' : '');
-    tab.id = 'tab' + i;
+    tab.className = 'child-tab' + (i===0?' active':'');
+    tab.id = 'tab'+i;
     tab.innerHTML = `<span>${EMOJIS[i]}</span><span id="childName${i}">${c.name}</span>`;
     tab.onclick = () => switchChild(i);
     nav.appendChild(tab);
 
-    const savedName = c.name !== ('ילד ' + (i + 1)) ? c.name : '';
-
+    // Panel
     const panel = document.createElement('div');
-    panel.className = 'child-panel' + (i === 0 ? ' active' : '');
-    panel.id = 'panel' + i;
+    panel.className = 'child-panel' + (i===0?' active':'');
+    panel.id = 'panel'+i;
     panel.innerHTML = `
       <div class="input-card">
         <div class="input-label">הדבק הודעות מהוואטסאפ</div>
-        <input class="name-input" id="nameInput${i}"
-          placeholder="שם הילד (לדוגמה: רומי)"
-          value="${savedName}"
-          oninput="updateChildName(${i}, this.value)">
-        <textarea id="waInput${i}"
-          placeholder="הדבק כאן את כל ההודעות מהקבוצה...&#10;&#10;דוגמה:&#10;[09:35] רותם: https://zoom.us/j/...&#10;[11:11] רותם: זום עם מדעים בשעה 11:30 👆"></textarea>
+        <input class="name-input" id="nameInput${i}" placeholder="שם הילד (לדוגמה: רומי)" value="${c.name !== ('ילד '+(i+1)) ? c.name : ''}" oninput="updateChildName(${i}, this.value)">
+        <textarea id="waInput${i}" placeholder="הדבק כאן את כל ההודעות מהקבוצה...&#10;&#10;דוגמה:&#10;[09:35] רותם: https://zoom.us/j/...&#10;[11:11] רותם: זום עם מדעים בשעה 11:30 👆"></textarea>
         <div class="error-msg" id="err${i}">לא הצלחתי למצוא שיעורים. נסה שנית.</div>
-        <button class="btn-parse" id="parseBtn${i}" onclick="parseSchedule(${i})">✨ חלץ שיעורים</button>
-        <div class="loading" id="loading${i}">
-          <div class="spinner"></div><span>מנתח עם AI...</span>
-        </div>
+        <button class="btn-parse" id="parseBtn${i}" onclick="parseSchedule(${i})">✨ חלץ שיעורים אוטומטית</button>
+        <div class="loading" id="loading${i}"><div class="spinner"></div><span>מנתח הודעות עם AI...</span></div>
       </div>
-      <div class="export-bar" id="exportBar${i}">
-        <span class="export-bar-title">📋 השיעורים חולצו</span>
+      <div class="export-bar" id="exportBar${i}" ${c.lessons.length ? 'style=""' : ''}>
+        <span class="export-bar-title">📋 השיעורים חולצו בהצלחה</span>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn-export-all" onclick="exportAllICS(${i})">📥 הורד ICS</button>
+          <button class="btn-export-all" onclick="exportAllICS(${i})">📥 הורד ICS לכולם</button>
           <button class="btn-whatsapp" onclick="copyWhatsApp(${i})">📱 העתק לוואטסאפ</button>
         </div>
       </div>
       <div class="schedule-section" id="schedule${i}">
-        <div class="empty-state">
-          <div class="empty-icon">📋</div>
-          <div class="empty-text">הדבק הודעות וואטסאפ ולחץ "חלץ שיעורים"</div>
-        </div>
+        <div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">הדבק הודעות וואטסאפ ולחץ "חלץ שיעורים"</div></div>
       </div>
     `;
     panels.appendChild(panel);
 
+    // Restore saved lessons if any
     if (c.lessons && c.lessons.length > 0) {
       renderSchedule(i, c.lessons);
-      document.getElementById('exportBar' + i).classList.add('show');
+      document.getElementById('exportBar'+i).classList.add('show');
     }
   });
 }
 
 function switchChild(idx) {
-  document.querySelectorAll('.child-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
-  document.querySelectorAll('.child-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.child-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
+  document.querySelectorAll('.child-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
   activeChild = idx;
 }
 
 function updateChildName(idx, val) {
-  childData[idx].name = val || ('ילד ' + (idx + 1));
-  document.getElementById('childName' + idx).textContent = childData[idx].name;
+  childData[idx].name = val || ('ילד ' + (idx+1));
+  document.getElementById('childName'+idx).textContent = childData[idx].name;
   saveData();
 }
 
@@ -390,101 +370,99 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// ─── AI Parse ────────────────────────────────────────────────────
 async function parseSchedule(idx) {
-  const text = document.getElementById('waInput' + idx).value.trim();
+  const text = document.getElementById('waInput'+idx).value.trim();
   if (!text) { showToast('אנא הדבק הודעות וואטסאפ קודם'); return; }
 
-  const btn = document.getElementById('parseBtn' + idx);
-  const loading = document.getElementById('loading' + idx);
-  const errEl = document.getElementById('err' + idx);
+  const btn = document.getElementById('parseBtn'+idx);
+  const loading = document.getElementById('loading'+idx);
+  const errEl = document.getElementById('err'+idx);
 
   btn.disabled = true;
   loading.classList.add('show');
   errEl.style.display = 'none';
-  document.getElementById('exportBar' + idx).classList.remove('show');
+  document.getElementById('exportBar'+idx).classList.remove('show');
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: "claude-sonnet-4-20250514",
         max_tokens: 1000,
         system: `You extract online lesson schedules from Israeli WhatsApp group messages.
 Return ONLY a valid JSON array. No markdown, no explanation, no backticks.
-Each item: {"time":"HH:MM","subject":"string","teacher":"string","meeting_url":"string","platform":"zoom|meet","date":"DD/MM/YYYY"}
+Each item must have: {"time":"HH:MM","subject":"string","teacher":"string","meeting_url":"string","platform":"zoom|meet","date":"DD/MM/YYYY"}
+
 Rules:
-- time: lesson START time from text like "בשעה 10:30" — NOT the message timestamp
-- subject: subject name (מדעים,מתמטיקה,עברית,רובוטיקה etc.) or teacher name if unknown
-- teacher: teacher/sender name
-- meeting_url: direct join URL (zoom.us / edu-il.zoom.us / us04web.zoom.us / meet.google.com)
-- platform: "zoom" or "meet"
-- date: from timestamp brackets [3/5/2026] → "03/05/2026"
-- Only include items with BOTH a URL AND a time
+- time: the lesson START time mentioned in the text like "בשעה 10:30" — NOT the message timestamp
+- subject: lesson subject (מדעים, מתמטיקה, עברית, רובוטיקה, etc.) or teacher name if subject unknown
+- teacher: name of teacher/sender
+- meeting_url: the direct join URL — Zoom (zoom.us, edu-il.zoom.us, us04web.zoom.us) OR Google Meet (meet.google.com)
+- platform: "zoom" if zoom URL, "meet" if Google Meet URL
+- date: from message timestamp in brackets like [3/5/2026] → "03/05/2026"
+- Only include rows where you found BOTH a meeting URL AND a time
+- If multiple URLs appear near the same "בשעה XX:XX" text, they are separate lessons
 - Return [] if nothing found`,
-        messages: [{ role: 'user', content: text }]
+        messages: [{ role: "user", content: text }]
       })
     });
 
-    const data = await res.json();
+    const data = await response.json();
     if (data.error) throw new Error(data.error.message);
+    
+    const raw = data.content.map(i => i.text||'').join('');
+    const cleaned = raw.replace(/```json|```/g,'').trim();
+    const lessons = JSON.parse(cleaned);
 
-    const raw = data.content.map(b => b.text || '').join('');
-    const lessons = JSON.parse(raw.replace(/```json|```/g, '').trim());
+    childData[idx].lessons = lessons;
 
-    childData[idx].lessons = Array.isArray(lessons) ? lessons : [];
-
-    if (!childData[idx].lessons.length) {
+    if (!Array.isArray(lessons) || lessons.length === 0) {
       errEl.style.display = 'block';
       renderSchedule(idx, []);
     } else {
-      renderSchedule(idx, childData[idx].lessons);
-      document.getElementById('exportBar' + idx).classList.add('show');
+      renderSchedule(idx, lessons);
+      document.getElementById('exportBar'+idx).classList.add('show');
       saveData();
-      showToast(`✅ נמצאו ${childData[idx].lessons.length} שיעורים`);
+      showToast(`✅ נמצאו ${lessons.length} שיעורים עבור ${childData[idx].name}`);
     }
-  } catch (e) {
-    document.getElementById('err' + idx).style.display = 'block';
-    console.error(e);
+  } catch(e) {
+    errEl.style.display = 'block';
+    console.error('Parse error:', e);
   } finally {
     btn.disabled = false;
     loading.classList.remove('show');
   }
 }
 
-// ─── Render ───────────────────────────────────────────────────────
 function renderSchedule(idx, lessons) {
-  const container = document.getElementById('schedule' + idx);
+  const container = document.getElementById('schedule'+idx);
   const childName = childData[idx].name;
 
   if (!lessons.length) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">לא נמצאו שיעורים</div></div>`;
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">לא נמצאו שיעורים בטקסט</div></div>`;
     return;
   }
 
-  const sorted = [...lessons].sort((a, b) => a.time.localeCompare(b.time));
+  const sorted = [...lessons].sort((a,b) => a.time.localeCompare(b.time));
   const date = lessons[0]?.date || '';
 
   container.innerHTML = `
     ${date ? `<div class="date-badge">📅 ${date}</div>` : ''}
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
       <div class="section-title">📚 שיעורי ${childName} <span class="lesson-count">${lessons.length} שיעורים</span></div>
     </div>
     <div class="lessons-grid">
-      ${sorted.map((l, i) => `
-        <div class="lesson-card" style="animation-delay:${i * 0.07}s">
+      ${sorted.map((l,i) => `
+        <div class="lesson-card" style="animation-delay:${i*0.08}s">
           <div class="lesson-time">${l.time}</div>
           <div class="lesson-info">
             <div class="lesson-subject">${l.subject}</div>
             ${l.teacher ? `<div class="lesson-teacher">👩‍🏫 ${l.teacher}</div>` : ''}
           </div>
           <div class="lesson-actions">
-            <a href="${l.meeting_url || l.zoom_url}" target="_blank"
-               class="btn-join ${l.platform === 'meet' ? 'meet' : ''}">
-              ${l.platform === 'meet' ? '🟢 מיט' : '🎥 זום'}
-            </a>
-            <button class="btn-ics" onclick="downloadSingleICS(${idx}, ${i})">📅</button>
+            <a href="${l.meeting_url||l.zoom_url}" target="_blank" class="btn-join ${l.platform==='meet'?'meet':''}">${l.platform==='meet'?'🟢 כניסה למיט':'🎥 כניסה לזום'}</a>
+            <button class="btn-ics" onclick="downloadSingleICS(${idx}, ${i})">📅 יומן</button>
           </div>
         </div>
       `).join('')}
@@ -492,64 +470,76 @@ function renderSchedule(idx, lessons) {
   `;
 }
 
-// ─── ICS Export ───────────────────────────────────────────────────
-function makeICS(lessons, childName) {
-  const pad = n => String(n).padStart(2, '0');
-  const fmt = dt => `${dt.getFullYear()}${pad(dt.getMonth()+1)}${pad(dt.getDate())}T${pad(dt.getHours())}${pad(dt.getMinutes())}00`;
-
-  const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//FamilyScheduler//IL','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
+function makeICSContent(lessons, childName) {
+  const lines = [
+    'BEGIN:VCALENDAR','VERSION:2.0',
+    'PRODID:-//ZoomFamilyScheduler//IL',
+    'CALSCALE:GREGORIAN','METHOD:PUBLISH',
+  ];
 
   lessons.forEach((l, i) => {
-    let start = '20260101T080000', end = '20260101T090000';
+    let dtStart, dtEnd;
     try {
-      const [d, m, y] = (l.date || '01/01/2026').split('/');
-      const [h, min] = l.time.split(':');
-      const dt = new Date(+y, +m-1, +d, +h, +min);
-      start = fmt(dt);
-      end = fmt(new Date(dt.getTime() + 3600000));
-    } catch {}
+      const [day, month, year] = (l.date||new Date().toLocaleDateString('en-GB')).split('/');
+      const [hour, min] = l.time.split(':');
+      const d = new Date(parseInt(year), parseInt(month)-1, parseInt(day), parseInt(hour), parseInt(min));
+      const end = new Date(d.getTime() + 60*60*1000);
+      const fmt = dt => {
+        const pad = n => String(n).padStart(2,'0');
+        return `${dt.getFullYear()}${pad(dt.getMonth()+1)}${pad(dt.getDate())}T${pad(dt.getHours())}${pad(dt.getMinutes())}00`;
+      };
+      dtStart = fmt(d);
+      dtEnd = fmt(end);
+    } catch {
+      dtStart = '20260101T080000'; dtEnd = '20260101T090000';
+    }
 
-    const url = l.meeting_url || l.zoom_url || '';
     lines.push(
       'BEGIN:VEVENT',
-      `UID:lesson-${Date.now()}-${i}@family`,
-      `DTSTART:${start}`,`DTEND:${end}`,
+      `UID:zoom-${Date.now()}-${i}@family-scheduler`,
+      `DTSTART:${dtStart}`,
+      `DTEND:${dtEnd}`,
       `SUMMARY:${l.subject} - ${childName}`,
-      `DESCRIPTION:${l.subject}\\nמורה: ${l.teacher||''}\\n${url}`,
-      `LOCATION:${url}`,`URL:${url}`,
-      'BEGIN:VALARM','TRIGGER:-PT10M','ACTION:DISPLAY',
-      `DESCRIPTION:⏰ ${l.subject} של ${childName} בעוד 10 דקות!`,
-      'END:VALARM','END:VEVENT'
+      `DESCRIPTION:שיעור: ${l.subject}\\nמורה: ${l.teacher||''}\\nקישור: ${l.meeting_url||l.zoom_url}`,
+      `LOCATION:${l.meeting_url||l.zoom_url}`,
+      `URL:${l.meeting_url||l.zoom_url}`,
+      'BEGIN:VALARM',
+      'TRIGGER:-PT10M',
+      'ACTION:DISPLAY',
+      `DESCRIPTION:⏰ ${l.subject} של ${childName} מתחיל בעוד 10 דקות!`,
+      'END:VALARM',
+      'END:VEVENT'
     );
   });
+
   lines.push('END:VCALENDAR');
   return lines.join('\r\n');
 }
 
-function dlICS(content, name) {
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(new Blob([content], {type:'text/calendar;charset=utf-8'})),
-    download: name
-  });
-  a.click(); URL.revokeObjectURL(a.href);
+function downloadICS(content, filename) {
+  const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
 }
 
 function exportAllICS(idx) {
-  const {lessons, name} = childData[idx];
+  const { lessons, name } = childData[idx];
   if (!lessons.length) return;
-  dlICS(makeICS(lessons, name), `לוז_${name}.ics`);
-  showToast('📥 פתח את הקובץ להוספה ל-Google Calendar');
+  downloadICS(makeICSContent(lessons, name), `לוז_${name}.ics`);
+  showToast('📥 הורד! פתח את הקובץ להוספה ל-Google Calendar');
 }
 
-function downloadSingleICS(idx, i) {
-  const l = childData[idx].lessons[i];
-  dlICS(makeICS([l], childData[idx].name), `${l.subject}_${l.time.replace(':','-')}.ics`);
-  showToast('📅 תזכורת 10 דקות לפני נוספה!');
+function downloadSingleICS(idx, lessonIdx) {
+  const l = childData[idx].lessons[lessonIdx];
+  const name = childData[idx].name;
+  downloadICS(makeICSContent([l], name), `${l.subject}_${l.time.replace(':','-')}.ics`);
+  showToast('📅 נוסף! תזכורת 10 דקות לפני השיעור');
 }
 
-// ─── WhatsApp ─────────────────────────────────────────────────────
 function copyWhatsApp(idx) {
-  const {lessons, name} = childData[idx];
+  const { lessons, name } = childData[idx];
   if (!lessons.length) return;
   const sorted = [...lessons].sort((a,b) => a.time.localeCompare(b.time));
   const date = lessons[0]?.date || '';
@@ -558,6 +548,7 @@ function copyWhatsApp(idx) {
   if (date) msg += ` — ${date}`;
   msg += '\n\n';
   sorted.forEach(l => {
+    const icon = l.platform === 'meet' ? '🟢' : '🎥';
     const platform = l.platform === 'meet' ? 'Google Meet' : 'Zoom';
     msg += `🕐 *${l.time}* — ${l.subject} (${platform})\n🔗 ${l.meeting_url||l.zoom_url}\n\n`;
   });
@@ -565,13 +556,7 @@ function copyWhatsApp(idx) {
 
   navigator.clipboard.writeText(msg)
     .then(() => showToast('📱 הועתק! הדבק בוואטסאפ'))
-    .catch(() => {
-      const ta = document.createElement('textarea');
-      ta.value = msg; document.body.appendChild(ta);
-      ta.select(); document.execCommand('copy');
-      document.body.removeChild(ta);
-      showToast('📱 הועתק!');
-    });
+    .catch(() => { const ta = document.createElement('textarea'); ta.value = msg; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showToast('📱 הועתק!'); });
 }
 
 init();
